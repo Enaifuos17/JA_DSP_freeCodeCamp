@@ -63,3 +63,64 @@ console.log("----------------------");
 // * ------------------------------------------------------------
 console.log("----------------------");
 // * ------------------------------------------------------------
+
+/*
+
+? Roman Numeral Converter
+
+Convert the given number into a roman numeral.
+
+*/
+
+function convertToRoman(num) {
+  let answer = [];
+  let obj = {
+    M: 1000,
+    CM: 900,
+    D: 500,
+    CD: 400,
+    C: 100,
+    XC: 90,
+    L: 50,
+    XL: 40,
+    X: 10,
+    IX: 9,
+    V: 5,
+    IV: 4,
+    I: 1,
+  };
+  let objLength = Object.keys(obj).length; // keys || values
+  let arabicNums = Object.values(obj);
+  let romanNums = Object.keys(obj);
+  //
+  for (let i = 0; i < objLength; i++) {
+    while (num >= arabicNums[i]) {
+      answer.push(romanNums[i]);
+      num -= arabicNums[i];
+    }
+  }
+  return answer.join("");
+}
+
+console.log(convertToRoman(2)); // II
+console.log(convertToRoman(3)); // III
+console.log(convertToRoman(4)); // IV
+console.log(convertToRoman(5)); // V
+console.log(convertToRoman(9)); // IX
+console.log(convertToRoman(12)); // XII
+console.log(convertToRoman(16)); // XVI
+console.log(convertToRoman(29)); // XXIX
+console.log(convertToRoman(44)); // XLIV
+console.log(convertToRoman(83)); // LXXXIII
+console.log(convertToRoman(400)); // CD
+console.log(convertToRoman(501)); // DI
+console.log(convertToRoman(891)); // DCCCXCI
+console.log(convertToRoman(1023)); // MXXIII
+console.log(convertToRoman(3999)); // MMMCMXCIX
+
+// * ------------------------------------------------------------
+console.log("----------------------");
+// * ------------------------------------------------------------
+// * ------------------------------------------------------------
+console.log("----------------------");
+// * ------------------------------------------------------------
