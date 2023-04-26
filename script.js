@@ -183,3 +183,116 @@ console.log("----------------------");
 // * ------------------------------------------------------------
 console.log("----------------------");
 // * ------------------------------------------------------------
+
+/* 
+
+? Telephone Number Validator
+
+Return true if the passed string looks like a valid US phone number.
+
+The user may fill out the form field any way they choose 
+as long as it has the format of a valid US number. 
+
+The following are examples of valid formats for US numbers 
+(refer to the tests below for other variants):
+
+555-555-5555
+(555)555-5555
+(555) 555-5555
+555 555 5555
+5555555555
+1 555 555 5555
+
+*/
+
+function telephoneCheck(str) {
+  let mainReg = /^1?\s?(\d{3}|\(\d{3}\))-?\s?\d{3}-?\s?\d{4}$/g;
+  return mainReg.test(str);
+}
+
+console.log(telephoneCheck("555-555-5555")); // t
+console.log(telephoneCheck("1 (555) 555-5555")); // t
+console.log(telephoneCheck("5555555555")); // t
+console.log(telephoneCheck("555-555-5555")); // t
+console.log(telephoneCheck("1(555)555-5555")); // t
+console.log(telephoneCheck("555-5555")); // f
+console.log(telephoneCheck("1 555)555-5555")); // f
+console.log(telephoneCheck("1 456 789 4444")); // t
+
+// * ------------------------------------------------------------
+console.log("----------------------");
+// * ------------------------------------------------------------
+// * ------------------------------------------------------------
+console.log("----------------------");
+// * ------------------------------------------------------------
+
+// ? Cash Register
+
+function checkCashRegister(price, cash, cid) {
+  let change = (cash - price) * 100; // work with Decimal is better
+  let cidTotal = 0;
+
+  // loop to add the sum of all cid in cidTotal
+  for (let i = 0; i < cid.length; i++) {
+    cidTotal += cid[i][1] * 100; // money is at pos 1
+  }
+
+  // * Start checking
+  if (change > cidTotal) {
+    return { status: "INSUFFICIENT_FUNDS", change: [] };
+  } else if (change === cidTotal) {
+    return { status: "CLOSED", change: cid };
+  } else {
+    let answer = [];
+
+    cid = cid.reverse(); // highest to lowest order
+    // Dec -> * 100
+    let moneyUnits = {
+      "ONE HUNDRED": 10000,
+      TWENTY: 2000,
+      TEN: 1000,
+      FIVE: 500,
+      ONE: 100,
+      QUARTER: 25,
+      DIME: 10,
+      NICKEL: 5,
+      PENNY: 1,
+    };
+
+    for (let i = 0; i < cid.length; i++) {
+      // * 0 -> currency unit ; 1 -> amount
+      let holder = [cid[i][0], 0]; // cid[i][0]
+      cid[i][1] = cid[i][1] * 100; // DEC
+
+      while (change >= moneyUnits[cid[i][0]] && cid[i][1] > 0) {
+        change -= moneyUnits[cid[i][0]];
+        cid[i][1] -= moneyUnits[cid[i][0]];
+        holder[1] += moneyUnits[cid[i][0]] / 100;
+      }
+
+      if (holder[1] > 0) {
+        answer.push(holder);
+      }
+    }
+
+    if (change > 0) {
+      return { status: "INSUFFICIENT_FUNDS", change: [] };
+    }
+
+    return { status: "OPEN", change: answer };
+  }
+}
+
+console.log(
+  checkCashRegister(19.5, 20, [
+    ["PENNY", 1.01],
+    ["NICKEL", 2.05],
+    ["DIME", 3.1],
+    ["QUARTER", 4.25],
+    ["ONE", 90],
+    ["FIVE", 55],
+    ["TEN", 20],
+    ["TWENTY", 60],
+    ["ONE HUNDRED", 100],
+  ])
+);
